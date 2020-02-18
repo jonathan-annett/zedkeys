@@ -5,7 +5,7 @@
     "email": "jonathan.max.annett@gmail.com"
   },
   "contributors": [],
-  "description": "newly created repo",
+  "description": "plugin to add zed keybindings to ACE editor",
   "license": "MIT",
   "dependencies": {
   },
