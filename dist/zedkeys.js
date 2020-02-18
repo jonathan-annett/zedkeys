@@ -1,5 +1,4 @@
 
-module.exports = function(window) {
     
     /*
     
@@ -371,13 +370,3 @@ module.exports = function(window) {
     }
     
     if (typeof window==='object') window.zedkeys=zedkeys;
-};
-if (process.argv.indexOf('--build')>0) {
-var fs=require("fs"),path=require("path"),pkg=path.basename(__dirname),dist=path.join(__dirname,'dist');
-fs.mkdir(dist,function(){
-    var src = module.exports.toString();
-    fs.writeFile(path.join(dist,pkg+'.js'),src.substring(src.indexOf('{')+1,src.length-1),function(){
-        console.log("built to",pkg+'.js','in',dist);
-    });
-});
-}

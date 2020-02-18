@@ -10,7 +10,9 @@
   "dependencies": {
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+    "build" : "node . --build"
+  },
   "keywords": [
   ],
   "main": "index.js",
