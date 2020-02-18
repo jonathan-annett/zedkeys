@@ -26,7 +26,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 module.exports = function(window) {
-
+    /*global ace*/
+    
+    
+    var config = {
+        __prefs : {
+            tabSize: 4,
+        },
+        getPreference : function (x){
+            return config.__prefs[x];
+        }
+    }
+    
     function camelHyphens(camelCased) {
         return camelCased.split('').map(function(X, ix) {
 
@@ -118,28 +129,6 @@ module.exports = function(window) {
 
         function paste(editor, args) {
             console.log("paste");
-            return false;
-        }
-        
-        function fold(editor, args) {
-            console.log("fold");
-            return false;
-        }
-        
-        function unfold(editor, args) {
-            console.log("unfold");
-            return false;
-        }
-
-        
-        function foldAll(editor, args) {
-            console.log("foldAll");
-            return false;
-        }
-        
-        
-        function unfoldAll(editor, args) {
-            console.log("unfoldAll");
             return false;
         }
 
@@ -258,6 +247,32 @@ module.exports = function(window) {
             return new Range(cursor.row, startCol, cursor.row, endCol);
         }
         
+        
+        // based on code from https://github.com/zedapp/zed/blob/661ba3ac2eda0757fea1a4d914195cd0043a2371/app/js/editor.js#358
+        function fold_Fold (editor) {
+            editor.session.toggleFold(false);
+        }
+        fold_Fold.doc= "Hide the code block currently enclosing the cursor.";
+
+        // based on code from https://github.com/zedapp/zed/blob/661ba3ac2eda0757fea1a4d914195cd0043a2371/app/js/editor.js#366
+        function fold_Unfold(editor) {
+                editor.session.toggleFold(true);
+        }
+        fold_Unfold.doc= "Show a hidden code block.";
+        
+        
+        // based on code from https://github.com/zedapp/zed/blob/661ba3ac2eda0757fea1a4d914195cd0043a2371/app/js/editor.js#374
+        function fold_FoldAll(editor) {
+                editor.session.foldAll();
+        }
+        fold_FoldAll.doc= "Hide all possible code blocks for the current mode.";
+            
+        // based on code from https://github.com/zedapp/zed/blob/661ba3ac2eda0757fea1a4d914195cd0043a2371/app/js/editor.js#382
+        function fold_UnfoldAll(editor) {
+            editor.session.unfold();
+        }
+        fold_UnfoldAll.doc= "Show all hidden code blocks.";
+
         
         // based on code from https://github.com/zedapp/zed/blob/661ba3ac2eda0757fea1a4d914195cd0043a2371/app/js/editor.js#L1033
         function find_NextInstanceOfIdentifier(edit) {
