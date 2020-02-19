@@ -12,7 +12,7 @@ still in beta, will add more keys and bug fixes as time goes on
     npm i github:jonathan-annett/zedkeys
     
 
-**installation - demo mode*
+**installation - demo mode**
 
 (installs a few extra dependancies for node.js launching via express)
 
