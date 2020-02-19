@@ -10,6 +10,7 @@ module.exports = function stub(mod, fn) {
             var src = mod.exports.toString();
             src = src.substring(src.indexOf('{') + 1, src.length - 1);
             fs.writeFile(path.join(dist, pkg + '.js'), src, function() {
+                
                 fs.readFile(path.join(dirname, 'index.html'), 'utf8',
 
                 function(err, html) {
