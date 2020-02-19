@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>ACE in Action</title>
+<title>zedkeys demo</title>
 <style type="text/css" media="screen">
     #editor { 
         position: absolute;
@@ -398,15 +398,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.7/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/chaos");
+    var theme = ["dawn","chaos","monokai","cobalt"][Math.floor(Math.random()*4)];
+    editor.setTheme("ace/theme/"+theme);
+    document.title = 'zedkeys demo - '+theme;
     editor.session.setMode("ace/mode/javascript");
+    window.zedkeys().addTo(editor);
     function configureWorker(e, session) {
         if (session.getMode().$id == "ace/mode/javascript") {
             if (session.$worker) {
                session.$worker.send("changeOptions",[ {undef: true,maxerr:10000}]);
             }
         }
-        window.zedkeys().addTo(editor);
         setTimeout(document.body.classList.remove.bind(document.body.classList,"startup"),1);
     }
     editor.session.on("changeMode", configureWorker);

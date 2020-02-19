@@ -382,24 +382,33 @@ fs.mkdir(dist,function(){
             fs.writeFile(path.join(dist,'index.html'),html.split('${injected}').join(src),function(){
                 if (process.argv.indexOf('--demo')>0) {
                     var 
-                    express,start_browser;
+                    express,
+                    start_browser,
+                    favicon;
                     
                     try {
                         start_browser=require("get-localhost-hostname/start-browser.js");
+                        favicon= require('serve-favicon');
                         express=require('express');
+
                     } catch (e) {
-                        console.log(e.message,"...installing...");
+                        if(e.message.indexOf("Cannot find module")<0) throw e;
+                        
+                        console.log("installing demo mode packages via npm...");
                         require("child_process").spawnSync('npm',[
-                            "install","express","github:jonathan-annett/get-localhost-hostname#4a1d263e52e06709c40e52a5f4281f451ad6f1b4"
+                            "install",
+                            "express",
+                            "github:jonathan-annett/get-localhost-hostname#4a1d263e52e06709c40e52a5f4281f451ad6f1b4",
+                            "github:jonathan-annett/serve-favicon#612c1a1b6301dc4ab0512bd467a8239e81a2af04"
                         ]);
-                        require("get-localhost-hostname");
                         start_browser=require("get-localhost-hostname/start-browser.js");
+                        favicon= require('serve-favicon');
                         express=require('express');
-                
                     }
                     
                     var app = express();
                     app.use('/',express.static(dist));
+                    app.use(favicon());
                     start_browser(app,undefined,"/");
                     
                 } else {
