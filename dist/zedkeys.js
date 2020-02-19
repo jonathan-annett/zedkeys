@@ -59,12 +59,17 @@
     function keysToCommands(keys,namePrefix) {
 
         var result = {
+            util : {},
             handlers: {},
             names: {},
             list: [],
             addTo: function(editor) {
                 var adder = editor.addCommand ? editor.addCommand.bind(editor) : editor.commands && editor.commands.addCommand ? editor.commands.addCommand.bind(editor.commands) : undefined;
                 if (adder) result.list.forEach(adder);
+                
+              editor.on("paste", function(e) {
+                    result.util.autoIndentOnPaste(editor, editor.session, e);
+                });
             },
         };
 
@@ -116,23 +121,6 @@
 
 
     function zedkeys() {
-
-
-        function copy(editor, args) {
-            console.log("copy");
-            return false;
-        }
-
-        function cut(editor, args) {
-            console.log("cut");
-            return false;
-        }
-
-        function paste(editor, args) {
-            console.log("paste");
-            return false;
-        }
-
 
         function autoIndentOnPaste(editor, session, e) {
             var pos = editor.getSelectionRange().start;
@@ -342,14 +330,6 @@
 
             CmdCtrl: {
 
-                "C": copy,
-                "X": cut,
-                "V": paste
-
-            },
-
-            Ctrl: {
-
                 "[": find_PreviousInstanceOfIdentifier,
                 "]": find_NextInstanceOfIdentifier,
 
@@ -365,7 +345,10 @@
 
         };
 
-        return keysToCommands(keys,'Zed-');
+        var self = keysToCommands(keys,'Zed-');
+        self.util.autoIndentOnPaste = autoIndentOnPaste;
+
+        return self;
 
     }
     
