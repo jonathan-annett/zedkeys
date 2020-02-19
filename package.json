@@ -11,10 +11,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build" : "node . --build"
+    "build": "node . --build",
+    "test": "node . --demo"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "main": "index.js",
   "name": "zedkeys",
   "repository": {

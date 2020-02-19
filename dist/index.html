@@ -1,5 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ACE in Action</title>
+<style type="text/css" media="screen">
+    #editor { 
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        font-size:12pt;
+    }
+    body.startup #editor { 
+        display:none;
+    }
+</style>
+</head>
+<body class="startup">
 
-module.exports = function(window) {
+<div id="editor">
+    
     
     /*
     
@@ -371,42 +391,25 @@ module.exports = function(window) {
     }
     
     if (typeof window==='object') window.zedkeys=zedkeys;
-};
-var fs=require("fs"),path=require("path"),pkg=path.basename(__dirname),dist=path.join(__dirname,'dist');
-if (process.argv.indexOf('--build')>0 || process.argv.indexOf('--demo')>0) {
-fs.mkdir(dist,function(){
-    var src = module.exports.toString();
-    src=src.substring(src.indexOf('{')+1,src.length-1);
-    fs.writeFile(path.join(dist,pkg+'.js'),src,function(){
-        fs.readFile('./index.html','utf8',function(err,html){
-            fs.writeFile(path.join(dist,'index.html'),html.split('${injected}').join(src),function(){
-                if (process.argv.indexOf('--demo')>0) {
-                    var 
-                    express,start_browser;
-                    
-                    try {
-                        start_browser=require("get-localhost-hostname/start-browser.js");
-                        express=require('express');
-                    } catch (e) {
-                        console.log(e.message,"...installing...");
-                        require("child_process").spawnSync('npm',[
-                            "install","express","github:jonathan-annett/get-localhost-hostname#4a1d263e52e06709c40e52a5f4281f451ad6f1b4"
-                        ]);
-                        require("get-localhost-hostname");
-                        start_browser=require("get-localhost-hostname/start-browser.js");
-                        express=require('express');
-                
-                    }
-                    
-                    var app = express();
-                    app.use('/',express.static(dist));
-                    start_browser(app,undefined,"/");
-                    
-                } else {
-                     console.log("built to",pkg+'.js','in',dist);
-                }
-            });
-        });
-    });
-});
-}
+
+</div>
+    
+<script src="zedkeys.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.7/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/chaos");
+    editor.session.setMode("ace/mode/javascript");
+    function configureWorker(e, session) {
+        if (session.getMode().$id == "ace/mode/javascript") {
+            if (session.$worker) {
+               session.$worker.send("changeOptions",[ {undef: true,maxerr:10000}]);
+            }
+        }
+        window.zedkeys().addTo(editor);
+        setTimeout(document.body.classList.remove.bind(document.body.classList,"startup"),1);
+    }
+    editor.session.on("changeMode", configureWorker);
+</script>
+</body>
+</html>
