@@ -16,7 +16,7 @@ still in beta, will add more keys and bug fixes as time goes on
 
 (installs a few extra dependancies for node.js launching via express)
 
-    npm i github:jonathan-annett/zedkeys && npm test 
+    npm i github:jonathan-annett/zedkeys && (cd node_modules/zedkeys; npm test )
 
 **usage**
 
