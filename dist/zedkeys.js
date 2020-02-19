@@ -352,4 +352,5 @@
 
     }
     
-    if (typeof window==='object') window.zedkeys=zedkeys;
+    window.zedkeys=zedkeys;
+    
